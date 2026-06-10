@@ -30,3 +30,15 @@ Paralelo (8 Threads),19.20 s,7.42x,92.7%
 
 Banco de Dados Utilizado:
 https://download.geofabrik.de/
+
+
+Segue um main.cpp completo, pronto para copiar e colar. Ele:
+
+* Lê o grafo de grafo.txt
+* Executa Dijkstra para 4000 origens
+* Testa 1, 2, 4, 8 e 12 threads
+* Mede tempo de execução
+* Calcula Speedup
+* Calcula Eficiência
+* Exibe tabela no terminal
+* Gera resultados.csv

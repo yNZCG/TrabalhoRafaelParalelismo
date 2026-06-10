@@ -1,0 +1,129 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <chrono>
+#include <climits>
+#include <omp.h>
+
+using namespace std;
+
+// Estrutura para representar uma aresta (rua/avenida)
+struct Aresta {
+    int destino;
+    int peso; // Tempo de viagem em minutos (com trânsito)
+};
+
+// Estrutura para o Grafo da Malha Rodoviária
+class GrafoBH {
+public:
+    int V; // Número de interseções (vértices)
+    vector<vector<Aresta>> adj;
+
+    GrafoBH(int V) {
+        this->V = V;
+        adj.resize(V);
+    }
+
+    void adicionarRua(int u, int v, int tempo) {
+        adj[u].push_back({v, tempo});
+    }
+};
+
+// Algoritmo de Dijkstra Serial
+void dijkstraSerial(const GrafoBH& grafo, int origem, vector<int>& distancias) {
+    int V = grafo.V;
+    distancias.assign(V, INT_MAX);
+    distancias[origem] = 0;
+
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    pq.push({0, origem});
+
+    while (!pq.empty()) {
+        int u = pq.top().second;
+        int d = pq.top().first;
+        pq.pop();
+
+        if (d > distancias[u]) continue;
+
+        for (const auto& aresta : grafo.adj[u]) {
+            int v = aresta.destino;
+            int peso = aresta.peso;
+
+            if (distancias[u] + peso < distancias[v]) {
+                distancias[v] = distancias[u] + peso;
+                pq.push({distancias[v], v});
+            }
+        }
+    }
+}
+
+// Execução Paralela: Calcula as rotas de fuga para MÚLTIPLAS origens simultaneamente
+void calcularRotasFugaParalelo(const GrafoBH& grafo, const vector<int>& pontosCongestionados, int numThreads) {
+    int numOrigens = pontosCongestionados.size();
+    
+    // Matriz para guardar os resultados de cada thread
+    vector<vector<int>> todasDistancias(numOrigens, vector<int>(grafo.V));
+
+    omp_set_num_threads(numThreads);
+
+    auto start = chrono::high_resolution_clock::now();
+
+    // Paralelização do laço que processa cada ponto crítico de BH
+    #pragma omp parallel for schedule(dynamic)
+    for (int i = 0; i < numOrigens; i++) {
+        int origem = pontosCongestionados[i];
+        // Cada thread executa sua busca de forma independente (Sem Condição de Corrida)
+        dijkstraSerial(grafo, origem, todasDistancias[i]);
+    }
+
+    auto end = chrono::high_resolution_clock::now();
+    chrono::duration<double, milli> tempo = end - start;
+    cout << "Tempo Paralelo (" << numThreads << " threads): " << tempo.count() << " ms\n";
+}
+
+void calcularRotasFugaSerial(const GrafoBH& grafo, const vector<int>& pontosCongestionados) {
+    int numOrigens = pontosCongestionados.size();
+    vector<vector<int>> todasDistancias(numOrigens, vector<int>(grafo.V));
+
+    auto start = chrono::high_resolution_clock::now();
+
+    for (int i = 0; i < numOrigens; i++) {
+        int origem = pontosCongestionados[i];
+        dijkstraSerial(grafo, origem, todasDistancias[i]);
+    }
+
+    auto end = chrono::high_resolution_clock::now();
+    chrono::duration<double, milli> tempo = end - start;
+    cout << "Tempo Serial: " << tempo.count() << " ms\n";
+}
+
+int main() {
+    // Simulando uma malha rodoviária grande de BH (ex: 50.000 cruzamentos)
+    int vertices = 50000; 
+    GrafoBH bh(vertices);
+
+    // Populando o grafo com conexões aleatórias simulando ruas
+    for (int i = 0; i < vertices; i++) {
+        bh.adicionarRua(i, (i + 1) % vertices, rand() % 15 + 1);
+        bh.adicionarRua(i, (i + 500) % vertices, rand() % 30 + 1);
+        bh.adicionarRua(i, (i + 1000) % vertices, rand() % 45 + 1);
+    }
+
+    // 100 pontos críticos de trânsito em BH precisando de rotas de fuga urgente
+    vector<int> pontosCriticos(100);
+    for (int i = 0; i < 100; i++) {
+        pontosCriticos[i] = rand() % vertices;
+    }
+
+    cout << "--- Iniciando Testes de Roteamento BH ---\n";
+    
+    // Teste Serial
+    calcularRotasFugaSerial(bh, pontosCriticos);
+
+    // Testes Paralelos com diferentes workloads de Threads
+    calcularRotasFugaParalelo(bh, pontosCriticos, 2);
+    calcularRotasFugaParalelo(bh, pontosCriticos, 4);
+    calcularRotasFugaParalelo(bh, pontosCriticos, 8);
+
+    return 0;
+}

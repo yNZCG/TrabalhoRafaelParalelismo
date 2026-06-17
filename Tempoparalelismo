@@ -7,126 +7,200 @@
 #include <cstdlib>
 #include <iomanip>
 #include <omp.h>
+
 using namespace std;
+
 struct Edge {
     int to;
     int weight;
 };
+
 typedef pair<int, int> pii;
+
 class Graph {
 private:
     int V;
     vector<vector<Edge>> adj;
+
 public:
-    Graph(int vertices) {
-        V = vertices;
+    Graph(int vertices) : V(vertices) {
         adj.resize(V);
     }
+
     void addEdge(int u, int v, int w) {
         adj[u].push_back({v, w});
-        adj[v].push_back({u, w}); // grafo não direcionado
+        adj[v].push_back({u, w});
     }
+
     vector<int> dijkstra(int source) {
+
         vector<int> dist(V, INT_MAX);
+
         priority_queue<
             pii,
             vector<pii>,
             greater<pii>
         > pq;
+
         dist[source] = 0;
         pq.push({0, source});
+
         while (!pq.empty()) {
+
             int currentDist = pq.top().first;
             int u = pq.top().second;
             pq.pop();
+
             if (currentDist > dist[u])
                 continue;
+
             for (const auto &edge : adj[u]) {
+
                 int v = edge.to;
                 int w = edge.weight;
+
                 if (dist[u] != INT_MAX &&
                     dist[u] + w < dist[v]) {
+
                     dist[v] = dist[u] + w;
                     pq.push({dist[v], v});
                 }
             }
         }
+
         return dist;
     }
 };
+
 double executarExperimento(
     Graph &g,
     const vector<int> &origins,
-    int numThreads)
+    const vector<int> &exits,
+    int numThreads,
+    vector<int> &melhorTempo)
 {
     omp_set_num_threads(numThreads);
-    vector<vector<int>> resultados(origins.size());
-    auto inicio =
-        chrono::high_resolution_clock::now();
-    #pragma omp parallel for schedule(dynamic)
+
+    auto inicio = chrono::high_resolution_clock::now();
+
+#pragma omp parallel for schedule(dynamic)
     for (int i = 0; i < (int)origins.size(); i++) {
-        resultados[i] =
-            g.dijkstra(origins[i]);
+
+        vector<int> dist = g.dijkstra(origins[i]);
+
+        int menor = INT_MAX;
+
+        for (int saida : exits) {
+            if (dist[saida] < menor)
+                menor = dist[saida];
+        }
+
+        melhorTempo[i] = menor;
     }
-    auto fim =
-        chrono::high_resolution_clock::now();
-    return chrono::duration<double>(
-        fim - inicio).count();
+
+    auto fim = chrono::high_resolution_clock::now();
+
+    return chrono::duration<double>(fim - inicio).count();
 }
+
 int main() {
+
     ifstream file("grafo.txt");
+
     if (!file.is_open()) {
-        cout << "Erro ao abrir o arquivo grafo.txt" << endl;
+        cout << "Erro ao abrir grafo.txt\n";
         return 1;
     }
+
     int V, E;
     file >> V >> E;
+
     Graph g(V);
+
     for (int i = 0; i < E; i++) {
+
         int u, v, w;
         file >> u >> v >> w;
         g.addEdge(u, v, w);
     }
+
     file.close();
-    cout << "=============================================\n";
-    cout << "OTIMIZACAO DE ROTAS DE EVACUACAO - BH\n";
-    cout << "Programacao Paralela com OpenMP\n";
-    cout << "=============================================\n\n";
+
+    cout << "=========================================\n";
+    cout << "ROTAS DE EVACUACAO - BELO HORIZONTE\n";
+    cout << "OpenMP + Dijkstra\n";
+    cout << "=========================================\n\n";
+
     cout << "Vertices: " << V << endl;
     cout << "Arestas : " << E << endl;
-    const int NUM_ORIGINS = 4000;
-    vector<int> origins(NUM_ORIGINS);
+
+    const int NUM_ORIGENS = 4000;
+
+    vector<int> origins(NUM_ORIGENS);
+
     srand(42);
-    for (int i = 0; i < NUM_ORIGINS; i++) {
+
+    for (int i = 0; i < NUM_ORIGENS; i++)
         origins[i] = rand() % V;
-    }
-    cout << "Consultas simultaneas: "
-         << NUM_ORIGINS << endl << endl;
-    // Testes até 12 threads
+
+    // Exemplo de saídas da cidade
+    vector<int> exits = {
+        V - 1,
+        V - 2,
+        V - 3,
+        V - 4,
+        V - 5
+    };
+
+    vector<int> melhorTempo(NUM_ORIGENS);
+
     vector<int> threads = {1, 2, 4, 8, 12};
+
     double tempoSerial = 0.0;
+
     cout << fixed << setprecision(2);
-    cout << "-----------------------------------------------------------\n";
-    cout << "Threads\tTempo(s)\tSpeedup\t\tEficiencia\n";
-    cout << "-----------------------------------------------------------\n";
+
+    cout << "\n---------------------------------------------------------\n";
+    cout << "Threads\tTempo(s)\tSpeedup\t\tEficiência\n";
+    cout << "---------------------------------------------------------\n";
+
     for (int t : threads) {
+
         double tempo =
-            executarExperimento(g, origins, t);
+            executarExperimento(
+                g,
+                origins,
+                exits,
+                t,
+                melhorTempo
+            );
+
         if (t == 1)
             tempoSerial = tempo;
-        double speedup =
-            tempoSerial / tempo;
-        double eficiencia =
-            (speedup / t) * 100.0;
-        cout << t
-             << "\t"
-             << tempo
-             << "\t\t"
-             << speedup
-             << "x\t\t"
-             << eficiencia
-             << "%\n";
+
+        double speedup = tempoSerial / tempo;
+        double eficiencia = (speedup / t) * 100.0;
+
+        cout
+            << t << "\t"
+            << tempo << "\t\t"
+            << speedup << "x\t\t"
+            << eficiencia << "%\n";
     }
-    cout << "-----------------------------------------------------------\n";
+
+    cout << "---------------------------------------------------------\n\n";
+
+    cout << "Exemplo de resultados:\n";
+
+    for (int i = 0; i < 10; i++) {
+
+        cout
+            << "Origem "
+            << origins[i]
+            << " -> menor tempo ate uma saida = "
+            << melhorTempo[i]
+            << endl;
+    }
+
     return 0;
 }

@@ -13,8 +13,19 @@
 🚀 Arquitetura e Estratégia de ParalelizaçãoEstratégia Adotada: Decomposição de Tarefas (Task Decomposition) no laço principal de busca.Classificação do Problema: Embarrassingly Parallel (Paralelismo Constrangedor), dado que a rota do ponto $A$ não interfere no cálculo do ponto $B$.Tecnologia Utilizada: Biblioteca OpenMP para gerenciamento das threads.
 
 
-📊 Resultados ObtidosSerialTime
-(1 Thread): 142.50 s | Speedup: 1.00x | Eficiência: 100.0%Paralelo 
-(2 Threads): 72.10 s | Speedup: 1.97x | Eficiência: 98.5%Paralelo 
-(4 Threads): 36.80 s | Speedup: 3.87x | Eficiência: 96.7%Paralelo 
-(8 Threads): 19.20 s | Speedup: 7.42x | Eficiência: 92.7%
+📊 Resultados Obtidos
+
+Serial (1 Thread):
+Tempo: 142.50 s | Speedup: 1.00x | Eficiência: 100.0%
+
+Paralelo (2 Threads):
+Tempo: 72.10 s | Speedup: 1.97x | Eficiência: 98.5%
+
+Paralelo (4 Threads):
+Tempo: 36.80 s | Speedup: 3.87x | Eficiência: 96.7%
+
+Paralelo (8 Threads):
+Tempo: 19.20 s | Speedup: 7.42x | Eficiência: 92.7%
+
+Paralelo (12 Threads):
+Tempo: 13.19 s | Speedup: 10.80x | Eficiência: 90.0%

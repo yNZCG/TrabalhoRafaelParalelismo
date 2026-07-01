@@ -115,14 +115,13 @@ onde:[cite: 1]
 
 ## 7. Gráfico de Tempo de Execução
 
-*[<img width="764" height="424" alt="{48EDEBAF-C00A-455B-9753-EE7570D3750C}" src="https://github.com/user-attachments/assets/72311f8d-44ae-4af4-b139-5c87e110056e" />
-]*
+*[<img width="764" height="424" alt="{48EDEBAF-C00A-455B-9753-EE7570D3750C}" src="https://github.com/user-attachments/assets/72311f8d-44ae-4af4-b139-5c87e110056e" />]*
 
 ---
 
 ## 8. Gráfico de Speedup
 
-*[Inserir aqui o Gráfico de Speedup × Threads]*
+*[<img width="643" height="235" alt="{91422B06-73F8-4DFC-B071-6CF012E89D0E}" src="https://github.com/user-attachments/assets/ea58ad37-e9ff-46bd-96dd-3bbba1f0b64e" />]*
 
 ---
 

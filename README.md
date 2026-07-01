@@ -115,7 +115,8 @@ onde:[cite: 1]
 
 ## 7. Gráfico de Tempo de Execução
 
-*[Inserir aqui o Gráfico de Tempo de Execução comparando as threads]*
+*[<img width="764" height="424" alt="{48EDEBAF-C00A-455B-9753-EE7570D3750C}" src="https://github.com/user-attachments/assets/72311f8d-44ae-4af4-b139-5c87e110056e" />
+]*
 
 ---
 

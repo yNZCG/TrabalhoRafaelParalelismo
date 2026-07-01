@@ -78,26 +78,26 @@ Os testes mediram a computação do algoritmo utilizando a biblioteca OpenMP nas
 
 ## 5. Cálculo de Speedup e Eficiência[cite: 1]
 
-### Speedup[cite: 1]
+## 5. Cálculo de Speedup e Eficiência
 
-$$Speedup(p) = \frac{T(1)}{T(p)}$$
+### Speedup
 
-[cite: 1]
+$$
+Speedup(p) = \frac{T(1)}{T(p)}
+$$
 
-onde:[cite: 1]
+onde:
 
-* $T(1)$ = tempo da execução serial[cite: 1]
-* $T(p)$ = tempo com $p$ threads/processos[cite: 1]
+* $T(1)$ = tempo de execução serial.
+* $T(p)$ = tempo de execução utilizando $p$ threads ou processos.
 
-### Eficiência[cite: 1]
+O Speedup representa o ganho de desempenho obtido ao executar o algoritmo de forma paralela em comparação com a execução sequencial.
 
-$$Eficiência(p) = \frac{Speedup(p)}{p}$$
+### Eficiência
 
-[cite: 1]
-
-onde:[cite: 1]
-
-* $p$ = número de threads ou processos[cite: 1]
+$$
+Eficiência(p) = \frac{Speedup(p)}{p}
+$$
 
 ---
 

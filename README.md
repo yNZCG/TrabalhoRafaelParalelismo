@@ -127,7 +127,7 @@ onde:[cite: 1]
 
 ## 9. Gráfico de Eficiência
 
-*[Inserir aqui o Gráfico de Eficiência (%) × Threads]*
+*[<img width="535" height="389" alt="{B47A9DE9-C8BF-4FDA-839C-3CDF025E4B94}" src="https://github.com/user-attachments/assets/dc69e0fe-f5ff-4017-900e-45fce28b5b32" />]*
 
 ---
 
@@ -149,5 +149,3 @@ A aplicação da decomposição de tarefas para o algoritmo de busca em grafos p
 
 * Base de dados cartográficos extraída do Geofabrik.
 
-
-* [Adicionar eventuais literaturas e referências extras utilizadas na modelagem e na biblioteca OpenMP]

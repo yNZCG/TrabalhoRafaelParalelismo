@@ -40,11 +40,11 @@ O problema foi classificado como *Embarrassingly Parallel* (Paralelismo Constran
 
 | Item | Descrição |
 | --- | --- |
-| **Processador** | [Preencher - Ex: Intel Core i7] |
-| **Número de núcleos** | [Preencher] |
-| **Memória RAM** | [Preencher] |
-| **Sistema Operacional** | [Preencher] |
-| **Compilador / Versão** | [Preencher - Ex: GCC com suporte OpenMP] |
+| **Processador** | [Intel Core i5-8400 @ 2.80 GHz] |
+| **Número de núcleos** | [6] |
+| **Memória RAM** | [16 GB] |
+| **Sistema Operacional** | [Windows 10 PRO] |
+| **Compilador / Versão** | [GCC com suporte OpenMP] |
 
 ---
 

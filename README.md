@@ -78,21 +78,11 @@ Os testes mediram a computação do algoritmo utilizando a biblioteca OpenMP nas
 
 | Nº Threads/Processos | Tempo de Execução (s) |
 | --- | --- |
-| 1 | 142.50
-
- |
-| 2 | 72.10
-
- |
-| 4 | 36.80
-
- |
-| 8 | 19.20
-
- |
-| 12 | 13.19
-
- |
+| 1 | 142.50 |
+| 2 | 72.10|
+| 4 | 36.80|
+| 8 | 19.20|
+| 12 | 13.19|
 
 ---
 

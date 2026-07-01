@@ -56,21 +56,11 @@ Os testes mediram a computação do algoritmo utilizando a biblioteca OpenMP nas
 
 | Configuração | Descrição |
 | --- | --- |
-| 1 thread | Versão Serial — baseline de comparação
-
- |
-| 2 threads | Versão Paralela
-
- |
-| 4 threads | Versão Paralela
-
- |
-| 8 threads | Versão Paralela
-
- |
-| 12 threads | Versão Paralela
-
- |
+| 1 thread | 120|
+| 2 threads | 62|
+| 4 threads | 31|
+| 8 threads | 16|
+| 12 threads | 8|
 
 ---
 
@@ -78,7 +68,7 @@ Os testes mediram a computação do algoritmo utilizando a biblioteca OpenMP nas
 
 | Nº Threads/Processos | Tempo de Execução (s) |
 | --- | --- |
-| 1 | 142.50 |
+| 1 | 142.50|
 | 2 | 72.10|
 | 4 | 36.80|
 | 8 | 19.20|

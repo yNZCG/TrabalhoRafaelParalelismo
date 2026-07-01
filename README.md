@@ -36,8 +36,6 @@ O problema foi classificado como *Embarrassingly Parallel* (Paralelismo Constran
 
 ## 2. Ambiente Experimental
 
-> **Nota:** *Informações de hardware não detalhadas no arquivo original. Preencha os dados da máquina utilizada para rodar os testes do OpenMP.*
-
 | Item | Descrição |
 | --- | --- |
 | **Processador** | [Intel Core i5-8400 @ 2.80 GHz] |
@@ -75,8 +73,6 @@ Os testes mediram a computação do algoritmo utilizando a biblioteca OpenMP nas
 | 12 | 13.19|
 
 ---
-
-## 5. Cálculo de Speedup e Eficiência[cite: 1]
 
 ## 5. Cálculo de Speedup e Eficiência
 
